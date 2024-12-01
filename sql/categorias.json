@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "nome": "Eletrônicos"
+    },
+    {
+        "id": 2,
+        "nome": "Relógios"
+    },
+    {
+        "id": 3,
+        "nome": "Áudio"
+    },
+    {
+        "id": 4,
+        "nome": "Transporte"
+    },
+    {
+        "id": 5,
+        "nome": "Smartphones"
+    },
+    {
+        "id": 6,
+        "nome": "Computadores"
+    },
+    {
+        "id": 7,
+        "nome": "Realidade Virtual"
+    },
+    {
+        "id": 8,
+        "nome": "Acessórios"
+    },
+    {
+        "id": 9,
+        "nome": "Câmeras"
+    },
+    {
+        "id": 10,
+        "nome": "Jogos"
+    }
+]

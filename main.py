@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI
 from fastapi.staticfiles import StaticFiles
+from repositories.categoria_repo import CategoriaRepo
 from repositories.usuario_repo import UsuarioRepo
 from repositories.item_pedido_repo import ItemPedidoRepo
 from repositories.pedido_repo import PedidoRepo
@@ -8,6 +9,8 @@ from routes import main_routes, cliente_routes, admin_routes
 from util.auth import checar_permissao, middleware_autenticacao
 from util.exceptions import configurar_excecoes
 
+CategoriaRepo.criar_tabela()
+CategoriaRepo.inserir_categorias_json("sql/categorias.json")
 ProdutoRepo.criar_tabela()
 ProdutoRepo.inserir_produtos_json("sql/produtos.json")
 UsuarioRepo.criar_tabela()

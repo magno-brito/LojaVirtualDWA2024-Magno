@@ -22,7 +22,7 @@ class CategoriaRepo:
                 cursor = conexao.cursor()
                 cursor.execute(
                     SQL_INSERIR,
-                    (categoria.nome),
+                    (categoria.nome,),
                 )
                 if cursor.rowcount > 0:
                     categoria.id = cursor.lastrowid
@@ -135,19 +135,6 @@ class CategoriaRepo:
                 categorias = json.load(arquivo)
                 for categoria in categorias:
                     CategoriaRepo.inserir(Categoria(**categoria))
-            cls.transferir_imagens("static/img/categorias/inserir", "static/img/categorias")
-
-    @classmethod
-    def transferir_imagens(cls, pasta_origem, pasta_destino):
-        path_origem = Path(pasta_origem)
-        path_destino = Path(pasta_destino)
-        if not path_origem.exists() or not path_origem.is_dir():
-            print(f"Pasta de origem {pasta_origem} não existe ou não é um diretório.")
-            return
-        if not path_destino.exists() or not path_destino.is_dir():
-            print(f"Pasta de destino {pasta_destino} não existe ou não é um diretório.")
-            return
-        for arquivo_imagem in path_origem.glob("*"):
-            if arquivo_imagem.is_file():
-                path_arquivo_destino = path_destino / arquivo_imagem.name
-                shutil.copy2(arquivo_imagem, path_arquivo_destino)
+            
+        
+  

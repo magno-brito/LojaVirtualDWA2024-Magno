@@ -22,7 +22,7 @@ class ProdutoRepo:
                 cursor = conexao.cursor()
                 cursor.execute(
                     SQL_INSERIR,
-                    (produto.nome, produto.preco, produto.descricao, produto.estoque),
+                    (produto.nome, produto.preco, produto.descricao, produto.estoque, produto.categoria_id),
                 )
                 if cursor.rowcount > 0:
                     produto.id = cursor.lastrowid
@@ -31,17 +31,33 @@ class ProdutoRepo:
             print(ex)
             return None
 
+    # @classmethod
+    # def obter_todos(cls) -> List[Produto]:
+    #     try:
+    #         with obter_conexao() as conexao:
+    #             cursor = conexao.cursor()
+    #             tuplas = cursor.execute(SQL_OBTER_TODOS).fetchall()
+    #             produtos = [Produto(*t) for t in tuplas]
+    #             return produtos
+    #     except sqlite3.Error as ex:
+    #         print(ex)
+    #         return None
+
     @classmethod
     def obter_todos(cls) -> List[Produto]:
         try:
             with obter_conexao() as conexao:
                 cursor = conexao.cursor()
                 tuplas = cursor.execute(SQL_OBTER_TODOS).fetchall()
+                print(f"Dados recuperados: {tuplas}")  # Verifique os dados recuperados
+                if not tuplas:
+                    return []  # Retorna uma lista vazia caso não haja produtos
                 produtos = [Produto(*t) for t in tuplas]
                 return produtos
         except sqlite3.Error as ex:
-            print(ex)
+            print(f"Erro no banco de dados: {ex}")
             return None
+
 
     @classmethod
     def alterar(cls, produto: Produto) -> bool:
@@ -55,6 +71,7 @@ class ProdutoRepo:
                         produto.preco,
                         produto.descricao,
                         produto.estoque,
+                        produto.categoria_id,
                         produto.id,
                     ),
                 )
