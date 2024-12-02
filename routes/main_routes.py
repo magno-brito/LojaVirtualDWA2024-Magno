@@ -1,9 +1,11 @@
 import math
 from sqlite3 import DatabaseError
+from typing import Optional
 from fastapi import APIRouter, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
 
 from dtos.entrar_dto import EntrarDTO
+from repositories.categoria_repo import CategoriaRepo
 from util.html import ler_html
 from dtos.novo_usuario_dto import NovoUsuarioDTO
 from models.usuario_model import Usuario
@@ -134,23 +136,64 @@ async def get_produto(request: Request, id: int):
 @router.get("/buscar")
 async def get_buscar(
     request: Request,
-    q: str,
+    q: str = "",
     p: int = 1,
     tp: int = 6,
     o: int = 1,
+    categoria_id: Optional[int] = None,  
 ):
-    produtos = ProdutoRepo.obter_busca(q, p, tp, o)
-    qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
+    if categoria_id == "":
+        categoria_id = None
+
+    if categoria_id is not None:
+        produtos = ProdutoRepo.obter_por_categoria(categoria_id, p, tp)
+        qtde_produtos = len(ProdutoRepo.obter_por_categoria(categoria_id))
+
+    else:
+        produtos = ProdutoRepo.obter_todos()
+        qtde_produtos = len(produtos)
+
     qtde_paginas = math.ceil(qtde_produtos / float(tp))
+    categorias = CategoriaRepo.obter_todos()
+
     return templates.TemplateResponse(
         "pages/buscar.html",
         {
             "request": request,
             "produtos": produtos,
+            "categorias": categorias,
             "quantidade_paginas": qtde_paginas,
             "tamanho_pagina": tp,
             "pagina_atual": p,
             "termo_busca": q,
             "ordem": o,
+            "categoria_selecionada": categoria_id, 
         },
     )
+
+
+# @router.get("/buscar")
+# async def get_buscar(
+#     request: Request,
+#     q: str,
+#     p: int = 1,
+#     tp: int = 6,
+#     o: int = 1,
+# ):
+#     produtos = ProdutoRepo.obter_busca(q, p, tp, o)
+#     qtde_produtos = ProdutoRepo.obter_quantidade_busca(q)
+#     qtde_paginas = math.ceil(qtde_produtos / float(tp))
+#     categorias = CategoriaRepo.obter_todos()
+#     return templates.TemplateResponse(
+#         "pages/buscar.html",
+#         {
+#             "request": request,
+#             "produtos": produtos,
+#             "categorias": categorias,
+#             "quantidade_paginas": qtde_paginas,
+#             "tamanho_pagina": tp,
+#             "pagina_atual": p,
+#             "termo_busca": q,
+#             "ordem": o,
+#         },
+#     )

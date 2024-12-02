@@ -22,23 +22,22 @@ SQL_OBTER_TODOS = """
 """
 
 
-
 SQL_ALTERAR = """
     UPDATE produto
-    SET nome=?, preco=?, descricao=?, estoque=?, categoria_id=?
-    WHERE id=?
+    SET produto.nome=?, produto.preco=?, protudo.descricao=?, produto.estoque=?, produto.categoria_id=?
+    WHERE produto.id=?
 """
 
 SQL_EXCLUIR = """
     DELETE FROM produto    
-    WHERE id=?
+    WHERE produto.id=?
 """
 
 SQL_OBTER_UM = """
-    SELECT id, nome, preco, descricao, estoque, categoria_id
+    SELECT produto.id, produto.nome, produto.preco, produto.descricao, produto.estoque, categorias.nome AS categoria_nome
     FROM produto
-    JOIN categoria ON produto.categoria_id = categoria_id
-    WHERE id=?
+    JOIN categorias ON produto.categoria_id = categorias.id
+    WHERE produto.id=?
 """
 
 SQL_OBTER_QUANTIDADE = """
@@ -46,25 +45,26 @@ SQL_OBTER_QUANTIDADE = """
 """
 
 SQL_OBTER_BUSCA = """
-    SELECT id, nome, preco, descricao, estoque, categoria_id
+    SELECT produto.id, produto.nome, produto.preco, produto.descricao, produto.estoque, produto.categoria_id
     FROM produto
-    JOIN categoria ON produto.categoria_id = categoria.id
-    WHERE nome LIKE ? OR descricao LIKE ?
-    ORDER BY #1
+    JOIN categorias ON produto.categoria_id = categorias.id
+    WHERE produto.nome LIKE ? OR descricao LIKE ?
+    ORDER BY produto.nome
     LIMIT ? OFFSET ?
 """
 
 SQL_OBTER_POR_CATEGORIA = """
-    SELECT produto.id, produto.nome, produto.preco, produto.descricao, produto.estoque,categoria.nome AS categoria_nome
+    SELECT produto.id, produto.nome, produto.preco, produto.descricao, produto.estoque, categorias.nome AS categoria_nome
     FROM produto
-    JOIN categoria ON produto.categoria_id = categoria.id
-    WHERE produto.nome LIKE ? OR produto.descricao LIKE ?
+    JOIN categorias ON produto.categoria_id = categorias.id
+    WHERE produto.categoria_id = ?
     ORDER BY produto.nome
     LIMIT ? OFFSET ?
-
 """
+
 
 SQL_OBTER_QUANTIDADE_BUSCA = """
     SELECT COUNT(*) FROM produto
-    WHERE nome LIKE ? OR descricao LIKE ?
+    WHERE produto.nome LIKE ? OR descricao LIKE ?
 """
+

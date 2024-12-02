@@ -1,0 +1,21 @@
+<div class="row g-3 mt-0">
+    <div class="col-12">
+        <h2>Categoria</h2>
+        <form method="get" action="/buscar" class="d-flex">
+            <select class="form-select" name="categoria_id" onchange="this.form.submit()">
+                <option value="" {% if categoria_selecionada is none %}selected{% endif %}>Todas as Categorias</option>
+                {% for c in categorias %}
+                    <option value="{{ c.id }}" {% if c.id == categoria_selecionada %}selected{% endif %}>
+                        {{ c.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+            
+            
+            <input type="hidden" name="q" value="{{ termo_busca }}">
+            <input type="hidden" name="p" value="{{ pagina_atual }}">
+            <input type="hidden" name="tp" value="{{ tamanho_pagina }}">
+            <input type="hidden" name="o" value="{{ ordem }}">
+        </form>
+    </div>
+</div>

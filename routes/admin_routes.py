@@ -18,6 +18,11 @@ async def obter_um(request: Request, id: int):
     produto = ProdutoRepo.obter_um(id)
     return produto
 
+@router.get("/obter_todos")
+async def obter_todos():
+    produtos = ProdutoRepo.obter_todos()
+    return produtos
+
 @router.post("/inserir_produto")
 async def inserir_produto(produto: NovoProdutoDTO):
     pass
@@ -26,3 +31,4 @@ async def inserir_produto(produto: NovoProdutoDTO):
 async def obter_categorias():
     categorias = CategoriaRepo.obter_todos()
     return categorias
+
